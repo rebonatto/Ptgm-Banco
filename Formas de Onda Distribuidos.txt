@@ -1,0 +1,11 @@
+Eventos a colocar no BD (geradas em TNS)
+Codigo  - Tipo - Descrição
+ 1      - Fuga - Resistor 1mA                              
+ 2      - Fuga - Resistor 0,5mA                     
+ 3      - Fuga - Diodo+Resistor
+ 4      - Fase - Lampada incandescente         40W  
+ 5      - Fase - Lampada incandescente         60W 
+ 6      - Fase - Lampada fluorescente compacta 15W 
+ 7      - Fase - Lampada Led                   11W 
+ 8      - Fuga - Resistor 2mA Saturando
+
