@@ -140,6 +140,19 @@ begin
 	select count(*) into @existeUsoSala 
 	from usosala 
 	where codUsoSala = @ultUsoSala;
+
+	/* caso exista e esteja ativa, verifica se faz mais de 10 minutos desde ultima captura */
+	if (@usoSalaAtiva = 1 and @existeUsoSala > 0) then
+		select MAX(dataAtual) into @ultimo
+		from capturaatual
+		join usosalacaptura using (codCaptura)
+		where codUsoSala = @ultUsoSala;
+		SET @limite = DATE_SUB(NOW(), INTERVAL '10' MINUTE);
+		if (@ultimo > @limite) then
+			update usosala set ativa = 0 where codUsoSala = @ultUsoSala;
+			select 0 into @usoSalaAtiva;
+		end if;
+	end if;
 	
 	/* caso não exista um uso sala ou o usoSala não ativo, cria um novo */
 	if (@usoSalaAtiva = 0 or @existeUsoSala = 0) then 
