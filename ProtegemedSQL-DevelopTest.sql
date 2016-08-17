@@ -129,12 +129,12 @@ CREATE TABLE IF NOT EXISTS `equipamento` (
 
 INSERT INTO `equipamento` (`codEquip`,`codMarca`,`codModelo`,`codTipo`,`rfid`,`codPatrimonio`,`desc`,`dataUltimaFalha`,`dataUltimaManutencao`,`tempoUso`) VALUES 
 (1,1,1,1,'12345601',0,'Equipamento na Tomada 1','2012-03-01','2012-03-01',198),
-(2,1,1,1,'12345602',1,'Equipamento na tomada 2','2012-03-01','2012-03-01',19),
-(3,1,1,1,'12345603',2,'Equipamento na tomada 3','2012-03-01','2012-03-01',52),
-(4,1,1,1,'12345604',3,'Equipamento na tomada 3','2012-03-01','2012-03-01',100),
-(5,1,1,1,'12345605',4,'Equipamento na tomada 4','2012-03-01','2012-03-01',200),
-(6,1,1,1,'12345606',5,'Equipamento na tomada 5','2012-03-01','2012-03-01',0),
-(7,1,1,1,'12345607',6,'Equipamento na tomada 6','2012-03-01','2012-03-01',0),
+(2,1,1,1,'12345602',1,'Equipamento na Tomada 2','2012-03-01','2012-03-01',19),
+(3,1,1,1,'12345603',2,'Equipamento na Tomada 3','2012-03-01','2012-03-01',52),
+(4,1,1,1,'12345604',3,'Equipamento na Tomada 3','2012-03-01','2012-03-01',100),
+(5,1,1,1,'12345605',4,'Equipamento na Tomada 4','2012-03-01','2012-03-01',200),
+(6,1,1,1,'12345606',5,'Equipamento na Tomada 5','2012-03-01','2012-03-01',0),
+(7,1,1,1,'12345607',6,'Equipamento na Tomada 6','2012-03-01','2012-03-01',0),
 (8,1,1,2,'123',222,'Outro teste','2012-07-02','2014-07-31',0);
 
 
@@ -350,24 +350,24 @@ CREATE TABLE `tomada` (
   `codTomada` int(11) NOT NULL,
   `codSala` int(11) NOT NULL,
   `indice` int(11) DEFAULT NULL,
-  `modulo` int(11) DEFAULT NULL,
+  `codModulo` int(11) DEFAULT NULL,
   `desc` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`codTomada`),
-  KEY `codUsoSala3` (`codSala`)
+  KEY `codUsoSala3` (`codSala`),
+  KEY `codModulo2` (`codModulo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `tomada`
 --
 
-INSERT INTO `tomada` (`codTomada`, `codSala`, `indice`, `modulo`, `desc`) VALUES
+INSERT INTO `tomada` (`codTomada`, `codSala`, `indice`, `codModulo`, `desc`) VALUES
 (1, 1, 1, 1, 'Tomada 1'),
-(2, 1, 2, 2, 'Tomada 2'),
-(3, 1, 3, 3, 'Tomada 3'),
-(4, 1, 4, 4, 'Tomada 4'),
-(5, 1, 5, 5, 'Tomada 5'),
-(6, 1, 6, 6, 'Tomada 6'),
-(7, 3, 7, 7, 'Tomada 7');
+(2, 1, 2, 1, 'Tomada 2'),
+(3, 1, 3, 1, 'Tomada 3'),
+(4, 1, 4, 2, 'Tomada 4'),
+(5, 1, 5, 2, 'Tomada 5'),
+(6, 1, 6, 2, 'Tomada 6');
 
 --
 -- Restrições para as tabelas dumpadas
@@ -845,8 +845,41 @@ CREATE TABLE `login` (
 #
 
 INSERT INTO `login` (`id`, `nome`, `email`, `senha`, `nivel`) VALUES 
-(1,'Administrador','admin@admin.com.br','admin',1),
-(2,'Maurício','mauricio@teste.com.br','mauricio',4);
+(1,'Administrador','admin@admin.com.br','admin',1);
+
+INSERT INTO `usosala` VALUES 
+(1,1,1,1,'2014-04-28 07:38:00','0000-00-00 00:00:00',1),
+(2,2,1,1,'2014-04-28 07:38:00','0000-00-00 00:00:00',1);
+
+INSERT INTO `usosalacaptura` VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,2),(8,2);
+
+#
+# Structure for table "modulo"
+#
+
+DROP TABLE IF EXISTS `modulo`;
+CREATE TABLE `modulo` (
+  `idModulo` int(10) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(16),
+  `idWebSocket` int(10),
+  `desc` varchar(400),
+  PRIMARY KEY (`idModulo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# Data for table "modulo"
+#
+
+INSERT INTO `modulo` VALUES 
+(1,'192.168.103.101',NULL,'Módulo 1'),
+(2,'192.168.103.102',NULL,'Módulo 2');
+  
+ALTER TABLE `tomada`
+  ADD CONSTRAINT `fktomadaModulo` FOREIGN KEY (`codModulo`) REFERENCES `modulo` (`idModulo`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+
+
+
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
