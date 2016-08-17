@@ -128,14 +128,14 @@ CREATE TABLE IF NOT EXISTS `equipamento` (
 
 
 INSERT INTO `equipamento` (`codEquip`,`codMarca`,`codModelo`,`codTipo`,`rfid`,`codPatrimonio`,`desc`,`dataUltimaFalha`,`dataUltimaManutencao`,`tempoUso`) VALUES 
-(1,1,1,1,'12345601',0,'Equipamento na Tomada 1','2012-03-01','2012-03-01',198),
-(2,1,1,1,'12345602',1,'Equipamento na Tomada 2','2012-03-01','2012-03-01',19),
-(3,1,1,1,'12345603',2,'Equipamento na Tomada 3','2012-03-01','2012-03-01',52),
-(4,1,1,1,'12345604',3,'Equipamento na Tomada 3','2012-03-01','2012-03-01',100),
-(5,1,1,1,'12345605',4,'Equipamento na Tomada 4','2012-03-01','2012-03-01',200),
-(6,1,1,1,'12345606',5,'Equipamento na Tomada 5','2012-03-01','2012-03-01',0),
-(7,1,1,1,'12345607',6,'Equipamento na Tomada 6','2012-03-01','2012-03-01',0),
-(8,1,1,2,'123',222,'Outro teste','2012-07-02','2014-07-31',0);
+(1,1,1,1,'FFFF0001',0,'Equipamento na Tomada 1','2012-03-01','2012-03-01',198),
+(2,1,1,1,'FFFF0002',1,'Equipamento na Tomada 2','2012-03-01','2012-03-01',19),
+(3,1,1,1,'FFFF0003',2,'Equipamento na Tomada 3','2012-03-01','2012-03-01',52),
+(4,1,1,1,'FFFF0004',3,'Equipamento na Tomada 4','2012-03-01','2012-03-01',100),
+(5,1,1,1,'FFFF0005',4,'Equipamento na Tomada 5','2012-03-01','2012-03-01',200),
+(6,1,1,1,'FFFF0006',5,'Equipamento na Tomada 6','2012-03-01','2012-03-01',0),
+(7,1,1,1,'FFFF0007',6,'Equipamento na Tomada 7','2012-03-01','2012-03-01',0),
+(8,1,1,2,'FFFF0008',222,'Outro teste','2012-07-02','2014-07-31',0);
 
 
 -- --------------------------------------------------------
@@ -163,7 +163,8 @@ INSERT INTO `eventos` (`codEvento`, `desc`, `formaOnda`) VALUES
 (5, 'Equipamento Desligado', 0),
 (6, 'Término de Fuga', 0),
 (7, 'Oi', 0),
-(8, 'Protegemed Inicializando', 0);
+(8, 'Protegemed Inicializando', 0),
+(9, 'Captura Externa', 1);
 
 -- --------------------------------------------------------
 
