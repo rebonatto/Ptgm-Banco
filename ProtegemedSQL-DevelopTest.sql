@@ -107,19 +107,24 @@ CREATE TABLE IF NOT EXISTS `equipamento` (
   `codMarca` int(11) NOT NULL,
   `codModelo` int(11) NOT NULL,
   `codTipo` int(11) NOT NULL,
+  `codTomada` int(11) NOT NULL,
   `rfid` varchar(45) NOT NULL,
   `codPatrimonio` int(11) NOT NULL,
   `desc` varchar(45) DEFAULT NULL,
   `dataUltimaFalha` date DEFAULT NULL,
   `dataUltimaManutencao` date DEFAULT NULL,
   `tempoUso` int(11) DEFAULT NULL,
+  `limiteFase` float DEFAULT 0,
+  `limiteFuga` float DEFAULT 0,
   PRIMARY KEY (`codEquip`),
   KEY `codMarca` (`codMarca`),
   KEY `codTipo` (`codTipo`),
   KEY `codModelo` (`codModelo`),
+  KEY `codTomada` (`codTomada`),
   KEY `fk_equipamento_1_idx` (`codTipo`),
   KEY `fk_equipamento_2_idx` (`codMarca`),
-  KEY `fk_equipamento_3_idx` (`codModelo`)
+  KEY `fk_equipamento_3_idx` (`codModelo`),
+  KEY `fk_equipamento_4_idx` (`codTomada`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
@@ -127,15 +132,15 @@ CREATE TABLE IF NOT EXISTS `equipamento` (
 --
 
 
-INSERT INTO `equipamento` (`codEquip`,`codMarca`,`codModelo`,`codTipo`,`rfid`,`codPatrimonio`,`desc`,`dataUltimaFalha`,`dataUltimaManutencao`,`tempoUso`) VALUES 
-(1,1,1,1,'FFFF0001',0,'Equipamento na Tomada 1','2012-03-01','2012-03-01',198),
-(2,1,1,1,'FFFF0002',1,'Equipamento na Tomada 2','2012-03-01','2012-03-01',19),
-(3,1,1,1,'FFFF0003',2,'Equipamento na Tomada 3','2012-03-01','2012-03-01',52),
-(4,1,1,1,'FFFF0004',3,'Equipamento na Tomada 4','2012-03-01','2012-03-01',100),
-(5,1,1,1,'FFFF0005',4,'Equipamento na Tomada 5','2012-03-01','2012-03-01',200),
-(6,1,1,1,'FFFF0006',5,'Equipamento na Tomada 6','2012-03-01','2012-03-01',0),
-(7,1,1,1,'FFFF0007',6,'Equipamento na Tomada 7','2012-03-01','2012-03-01',0),
-(8,1,1,2,'FFFF0008',222,'Outro teste','2012-07-02','2014-07-31',0);
+INSERT INTO `equipamento` (`codEquip`,`codMarca`,`codModelo`,`codTipo`,`codTomada`,`rfid`,`codPatrimonio`,`desc`,`dataUltimaFalha`,`dataUltimaManutencao`,`tempoUso`,`limiteFase`,`limiteFuga`) VALUES 
+(1,1,1,1,0,'FFFF0001',0,'Equipamento na Tomada 1','2012-03-01','2012-03-01',198,0.5,0.5),
+(2,1,1,1,0,'FFFF0002',1,'Equipamento na Tomada 2','2012-03-01','2012-03-01',19,0.5,0.5),
+(3,1,1,1,0,'FFFF0003',2,'Equipamento na Tomada 3','2012-03-01','2012-03-01',52,0.5,0.5),
+(4,1,1,1,0,'FFFF0004',3,'Equipamento na Tomada 4','2012-03-01','2012-03-01',100,0.5,0.5),
+(5,1,1,1,0,'FFFF0005',4,'Equipamento na Tomada 5','2012-03-01','2012-03-01',200,0.5,0.5),
+(6,1,1,1,0,'FFFF0006',5,'Equipamento na Tomada 6','2012-03-01','2012-03-01',0,0.5,0.5),
+(7,1,1,1,0,'FFFF0007',6,'Equipamento na Tomada 7','2012-03-01','2012-03-01',0,0.5,0.5),
+(8,1,1,2,0,'FFFF0008',222,'Outro teste','2012-07-02','2014-07-31',0,0.5,0.5);
 
 
 -- --------------------------------------------------------
@@ -164,7 +169,9 @@ INSERT INTO `eventos` (`codEvento`, `desc`, `formaOnda`) VALUES
 (6, 'Término de Fuga', 0),
 (7, 'Oi', 0),
 (8, 'Protegemed Inicializando', 0),
-(9, 'Captura Externa', 1);
+(9, 'Captura Externa Fase', 1),
+(10, 'Captura Externa Fuga', 1);
+
 
 -- --------------------------------------------------------
 
@@ -351,6 +358,8 @@ CREATE TABLE `tomada` (
   `codTomada` int(11) NOT NULL,
   `codSala` int(11) NOT NULL,
   `indice` int(11) DEFAULT NULL,
+  `limiteFase` float DEFAULT 0.0,
+  `limiteFuga` float DEFAULT 0.0,
   `codModulo` int(11) DEFAULT NULL,
   `desc` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`codTomada`),
@@ -362,13 +371,14 @@ CREATE TABLE `tomada` (
 -- Extraindo dados da tabela `tomada`
 --
 
-INSERT INTO `tomada` (`codTomada`, `codSala`, `indice`, `codModulo`, `desc`) VALUES
-(1, 1, 1, 1, 'Tomada 1'),
-(2, 1, 2, 1, 'Tomada 2'),
-(3, 1, 3, 1, 'Tomada 3'),
-(4, 1, 4, 2, 'Tomada 4'),
-(5, 1, 5, 2, 'Tomada 5'),
-(6, 1, 6, 2, 'Tomada 6');
+INSERT INTO `tomada` (`codTomada`, `codSala`, `indice`,`limiteFase`,`limiteFuga`, `codModulo`, `desc`) VALUES
+(0, 1, 1, 0, 0, 0, 'Equipamento sem Tomada'),
+(1, 1, 1, 0.5, 0.5, 1, 'Tomada 1'),
+(2, 1, 2, 0.5, 0.5, 1, 'Tomada 2'),
+(3, 1, 3, 0.5, 0.5, 1, 'Tomada 3'),
+(4, 1, 4, 0.5, 0.5, 2, 'Tomada 4'),
+(5, 1, 5, 0.5, 0.5, 2, 'Tomada 5'),
+(6, 1, 6, 0.5, 0.5, 2, 'Tomada 6');
 
 --
 -- Restrições para as tabelas dumpadas
@@ -380,7 +390,8 @@ INSERT INTO `tomada` (`codTomada`, `codSala`, `indice`, `codModulo`, `desc`) VAL
 ALTER TABLE `equipamento`
   ADD CONSTRAINT `fk_equipamento_1` FOREIGN KEY (`codTipo`) REFERENCES `tipo` (`codTipo`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_equipamento_2` FOREIGN KEY (`codMarca`) REFERENCES `marca` (`codMarca`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_equipamento_3` FOREIGN KEY (`codModelo`) REFERENCES `modelo` (`codModelo`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_equipamento_3` FOREIGN KEY (`codModelo`) REFERENCES `modelo` (`codModelo`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_equipamento_4` FOREIGN KEY (`codTomada`) REFERENCES `tomada` (`codTomada`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Restrições para a tabela `tomada`
@@ -738,7 +749,7 @@ CREATE TABLE `usosala` (
   KEY `codResp` (`codResp`),
   KEY `codProced` (`codProced`),
   KEY `codSala` (`codSala`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -872,13 +883,12 @@ CREATE TABLE `modulo` (
 #
 
 INSERT INTO `modulo` VALUES 
-(1,'192.168.103.101',NULL,'Módulo 1'),
-(2,'192.168.103.102',NULL,'Módulo 2');
+(0,'0.0.0.0',NULL,'Módulo 0'),
+(1,'192.168.1.101',NULL,'Módulo 1'),
+(2,'192.168.1.102',NULL,'Módulo 2');
   
 ALTER TABLE `tomada`
   ADD CONSTRAINT `fktomadaModulo` FOREIGN KEY (`codModulo`) REFERENCES `modulo` (`idModulo`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
-
 
 
 
