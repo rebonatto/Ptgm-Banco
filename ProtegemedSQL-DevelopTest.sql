@@ -114,8 +114,10 @@ CREATE TABLE IF NOT EXISTS `equipamento` (
   `dataUltimaFalha` date DEFAULT NULL,
   `dataUltimaManutencao` date DEFAULT NULL,
   `tempoUso` int(11) DEFAULT NULL,
-  `limiteFase` float DEFAULT 0,
-  `limiteFuga` float DEFAULT 0,
+  `limiteFase` float DEFAULT 0.0,
+  `limiteFuga` float DEFAULT 0.0,
+  `limiteStandByFase` float DEFAULT 0.0,
+  `limiteStandByFuga` float DEFAULT 0.0,
   PRIMARY KEY (`codEquip`),
   KEY `codMarca` (`codMarca`),
   KEY `codTipo` (`codTipo`),
@@ -132,15 +134,15 @@ CREATE TABLE IF NOT EXISTS `equipamento` (
 --
 
 
-INSERT INTO `equipamento` (`codEquip`,`codMarca`,`codModelo`,`codTipo`,`codTomada`,`rfid`,`codPatrimonio`,`desc`,`dataUltimaFalha`,`dataUltimaManutencao`,`tempoUso`,`limiteFase`,`limiteFuga`) VALUES 
-(1,1,1,1,0,'FFFF0001',0,'Equipamento na Tomada 1','2012-03-01','2012-03-01',198,0.5,0.5),
-(2,1,1,1,0,'FFFF0002',1,'Equipamento na Tomada 2','2012-03-01','2012-03-01',19,0.5,0.5),
-(3,1,1,1,0,'FFFF0003',2,'Equipamento na Tomada 3','2012-03-01','2012-03-01',52,0.5,0.5),
-(4,1,1,1,0,'FFFF0004',3,'Equipamento na Tomada 4','2012-03-01','2012-03-01',100,0.5,0.5),
-(5,1,1,1,0,'FFFF0005',4,'Equipamento na Tomada 5','2012-03-01','2012-03-01',200,0.5,0.5),
-(6,1,1,1,0,'FFFF0006',5,'Equipamento na Tomada 6','2012-03-01','2012-03-01',0,0.5,0.5),
-(7,1,1,1,0,'FFFF0007',6,'Equipamento na Tomada 7','2012-03-01','2012-03-01',0,0.5,0.5),
-(8,1,1,2,0,'FFFF0008',222,'Outro teste','2012-07-02','2014-07-31',0,0.5,0.5);
+INSERT INTO `equipamento` (`codEquip`,`codMarca`,`codModelo`,`codTipo`,`codTomada`,`rfid`,`codPatrimonio`,`desc`,`dataUltimaFalha`,`dataUltimaManutencao`,`tempoUso`,`limiteFase`,`limiteFuga`,`limiteStandByFase`,`limiteStandByFuga`) VALUES 
+(1,1,1,1,0,'FFFF0001',0,'Equipamento 1','2012-03-01','2012-03-01',198,0.5,0.5,0.2,0.2),
+(2,1,1,1,0,'FFFF0002',1,'Equipamento 2','2012-03-01','2012-03-01',19,0.5,0.5,0.2,0.2),
+(3,1,1,1,0,'FFFF0003',2,'Equipamento 3','2012-03-01','2012-03-01',52,0.5,0.5,0.2,0.2),
+(4,1,1,1,0,'FFFF0004',3,'Equipamento 4','2012-03-01','2012-03-01',100,0.5,0.5,0.2,0.2),
+(5,1,1,1,0,'FFFF0005',4,'Equipamento 5','2012-03-01','2012-03-01',200,0.5,0.5,0.2,0.2),
+(6,1,1,1,0,'FFFF0006',5,'Equipamento 6','2012-03-01','2012-03-01',0,0.5,0.5,0.2,0.2),
+(7,1,1,1,0,'FFFF0007',6,'Equipamento 7','2012-03-01','2012-03-01',0,0.5,0.5,0.2,0.2),
+(8,1,1,1,0,'FFFF0008',7,'Equipamento 8','2012-03-01','2012-03-01',0,0.5,0.5,0.2,0.2);
 
 
 -- --------------------------------------------------------
@@ -360,6 +362,8 @@ CREATE TABLE `tomada` (
   `indice` int(11) DEFAULT NULL,
   `limiteFase` float DEFAULT 0.0,
   `limiteFuga` float DEFAULT 0.0,
+  `limiteStandByFase` float DEFAULT 0.0,
+  `limiteStandByFuga` float DEFAULT 0.0,
   `codModulo` int(11) DEFAULT NULL,
   `desc` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`codTomada`),
@@ -371,14 +375,14 @@ CREATE TABLE `tomada` (
 -- Extraindo dados da tabela `tomada`
 --
 
-INSERT INTO `tomada` (`codTomada`, `codSala`, `indice`,`limiteFase`,`limiteFuga`, `codModulo`, `desc`) VALUES
-(0, 1, 1, 0, 0, 0, 'Equipamento sem Tomada'),
-(1, 1, 1, 0.5, 0.5, 1, 'Tomada 1'),
-(2, 1, 2, 0.5, 0.5, 1, 'Tomada 2'),
-(3, 1, 3, 0.5, 0.5, 1, 'Tomada 3'),
-(4, 1, 4, 0.5, 0.5, 2, 'Tomada 4'),
-(5, 1, 5, 0.5, 0.5, 2, 'Tomada 5'),
-(6, 1, 6, 0.5, 0.5, 2, 'Tomada 6');
+INSERT INTO `tomada` (`codTomada`, `codSala`, `indice`,`limiteFase`,`limiteFuga`,`limiteStandByFase`,`limiteStandByFuga`,`codModulo`, `desc`) VALUES
+(0, 1, 1, 0, 0, 0, 0, 0, 'Equipamento sem Tomada'),
+(1, 1, 1, 0.5, 0.5, 0.2, 0.2, 1, 'Tomada 1'),
+(2, 1, 2, 0.5, 0.5, 0.2, 0.2, 1, 'Tomada 2'),
+(3, 1, 3, 0.5, 0.5, 0.2, 0.2, 1, 'Tomada 3'),
+(4, 1, 4, 0.5, 0.5, 0.2, 0.2, 2, 'Tomada 4'),
+(5, 1, 5, 0.5, 0.5, 0.2, 0.2, 2, 'Tomada 5'),
+(6, 1, 6, 0.5, 0.5, 0.2, 0.2, 2, 'Tomada 6');
 
 --
 -- Restrições para as tabelas dumpadas
