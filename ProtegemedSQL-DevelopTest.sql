@@ -172,8 +172,9 @@ INSERT INTO `eventos` (`codEvento`, `desc`, `formaOnda`) VALUES
 (7, 'Oi', 0),
 (8, 'Protegemed Inicializando', 0),
 (9, 'Captura Externa Fase', 1),
-(10, 'Captura Externa Fuga', 1);
-
+(10, 'Captura Externa Fuga', 1),
+(11, 'Inicio StandBy', 1),
+(12, 'Término StandBy', 0);
 
 -- --------------------------------------------------------
 
