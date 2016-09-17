@@ -125,8 +125,7 @@ CREATE TABLE IF NOT EXISTS `equipamento` (
   KEY `codTomada` (`codTomada`),
   KEY `fk_equipamento_1_idx` (`codTipo`),
   KEY `fk_equipamento_2_idx` (`codMarca`),
-  KEY `fk_equipamento_3_idx` (`codModelo`),
-  KEY `fk_equipamento_4_idx` (`codTomada`)
+  KEY `fk_equipamento_3_idx` (`codModelo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
@@ -889,13 +888,18 @@ CREATE TABLE `modulo` (
 # Data for table "modulo"
 #
 
-INSERT INTO `modulo` VALUES 
+INSERT INTO `modulo` (`idModulo`, `ip`, `idWebSocket`, `desc`) VALUES 
 (0,'0.0.0.0',NULL,'Módulo 0'),
 (1,'192.168.1.101',NULL,'Módulo 1'),
-(2,'192.168.1.102',NULL,'Módulo 2');
+(2,'192.168.1.102',NULL,'Módulo 2'),
+(3,'192.168.1.103',NULL,'Módulo 3'),
+(4,'192.168.1.104',NULL,'Módulo 4'),
+(5,'192.168.1.105',NULL,'Módulo 5'),
+(6,'192.168.1.106',NULL,'Módulo 6'),
+(7,'192.168.1.107',NULL,'Módulo 7');
   
 ALTER TABLE `tomada`
-  ADD CONSTRAINT `fktomadaModulo` FOREIGN KEY (`codModulo`) REFERENCES `modulo` (`idModulo`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fkTomadaModulo` FOREIGN KEY (`codModulo`) REFERENCES `modulo` (`idModulo`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 
 
