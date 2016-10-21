@@ -436,7 +436,7 @@ CREATE TABLE `capturaatual` (
   KEY `fk_capturaatual_2_idx` (`codTipoOnda`),
   KEY `fk_capturaatual_3_idx` (`codEquip`),
   KEY `fk_capturaatual_4_idx` (`codTomada`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 --
@@ -880,6 +880,7 @@ CREATE TABLE `modulo` (
   `idModulo` int(10) NOT NULL AUTO_INCREMENT,
   `ip` varchar(16),
   `idWebSocket` int(10),
+  `ultimoLiga` datetime DEFAULT NULL,
   `desc` varchar(400),
   PRIMARY KEY (`idModulo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

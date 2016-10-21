@@ -58,6 +58,7 @@ CREATE TABLE `protegemed`.`modulo` (
   `idModulo` int(10) PRIMARY KEY,
   `ip` varchar(16),
   `idWebSocket` int(10),
+  `ultimoLiga` datetime DEFAULT NULL,
   `desc` varchar(400)
   )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
