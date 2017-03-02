@@ -58,7 +58,7 @@ BEGIN
 
 	if (@ultimo is null) then
 		select AUTO_INCREMENT into @ultimo
-		from information_schema.TABLES			 
+		from information_schema.TABLES
 		where TABLE_SCHEMA = 'protegemed'
 		and   TABLE_NAME = 'usosala';
 	end if;
@@ -91,7 +91,7 @@ BEGIN
 
 	select max(codcaptura) into @ultimo
     from capturaatual ;
-	
+
 	return @ultimo;
 END$$
 
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `equipamento` (
 --
 
 
-INSERT INTO `equipamento` (`codEquip`,`codMarca`,`codModelo`,`codTipo`,`codTomada`,`rfid`,`codPatrimonio`,`desc`,`dataUltimaFalha`,`dataUltimaManutencao`,`tempoUso`,`limiteFase`,`limiteFuga`,`limiteStandByFase`,`limiteStandByFuga`) VALUES 
+INSERT INTO `equipamento` (`codEquip`,`codMarca`,`codModelo`,`codTipo`,`codTomada`,`rfid`,`codPatrimonio`,`desc`,`dataUltimaFalha`,`dataUltimaManutencao`,`tempoUso`,`limiteFase`,`limiteFuga`,`limiteStandByFase`,`limiteStandByFuga`) VALUES
 (1,1,1,1,0,'FFFF0001',0,'Equipamento 1','2012-03-01','2012-03-01',198,0.5,0.5,0.2,0.2),
 (2,1,1,1,0,'FFFF0002',1,'Equipamento 2','2012-03-01','2012-03-01',19,0.5,0.5,0.2,0.2),
 (3,1,1,1,0,'FFFF0003',2,'Equipamento 3','2012-03-01','2012-03-01',52,0.5,0.5,0.2,0.2),
@@ -384,7 +384,10 @@ INSERT INTO `tomada` (`codTomada`, `codSala`, `indice`,`limiteFase`,`limiteFuga`
 (3, 1, 3, 0.5, 0.5, 0.2, 0.2, 1, 'Tomada 3'),
 (4, 1, 4, 0.5, 0.5, 0.2, 0.2, 2, 'Tomada 4'),
 (5, 1, 5, 0.5, 0.5, 0.2, 0.2, 2, 'Tomada 5'),
-(6, 1, 6, 0.5, 0.5, 0.2, 0.2, 2, 'Tomada 6');
+(6, 1, 6, 0.5, 0.5, 0.2, 0.2, 2, 'Tomada 6'),
+(7, 1, 7, 0.5, 0.5, 0.2, 0.2, 3, 'Tomada 7'),
+(8, 1, 8, 0.5, 0.5, 0.2, 0.2, 3, 'Tomada 8'),
+(9, 1, 9, 0.5, 0.5, 0.2, 0.2, 3, 'Tomada 9');
 
 --
 -- Restrições para as tabelas dumpadas
@@ -478,27 +481,27 @@ CREATE TRIGGER `atualiza` AFTER INSERT ON `capturaatual`
 
 	/* pega a última codigo do último UsoSala da sala onde esta sendo inserida a onda */
 	set @ultUsoSala = f_ultUsoSala( @salaAtual );
-	
+
 	/* verifica se a usosala esta ativa */
 	select ativa into @usoSalaAtiva
-	from usosala 
+	from usosala
 	where codUsoSala = @ultUsoSala;
 
 	/* verifica se existe usosala */
-	select count(*) into @existeUsoSala 
-	from usosala 
+	select count(*) into @existeUsoSala
+	from usosala
 	where codUsoSala = @ultUsoSala;
-	
-	/* caso não exista um uso sala ou o usoSala não ativo, cria um novo */
-	if (@usoSalaAtiva = 0 or @existeUsoSala = 0) then 
-		insert into usosala (codsala, codProced, codResp, horainicio,   ativa) 
-		values (          @salaAtual,         1,       1, new.dataAtual, 1); 
 
-		set @ultUsoSala = f_ultUsoSala( @salaAtual );		
+	/* caso não exista um uso sala ou o usoSala não ativo, cria um novo */
+	if (@usoSalaAtiva = 0 or @existeUsoSala = 0) then
+		insert into usosala (codsala, codProced, codResp, horainicio,   ativa)
+		values (          @salaAtual,         1,       1, new.dataAtual, 1);
+
+		set @ultUsoSala = f_ultUsoSala( @salaAtual );
 	end if;
 
 	/* Insere o evento de captura em usosalacaptura */
-	insert into usosalacaptura (codUsoSala, codCaptura) values (@ultUsoSala, new.codCaptura); 
+	insert into usosalacaptura (codUsoSala, codCaptura) values (@ultUsoSala, new.codCaptura);
 
 	/* Verifica se o equipamento já foi inserido */
 	select count(*) into @insEquip
@@ -512,24 +515,24 @@ CREATE TRIGGER `atualiza` AFTER INSERT ON `capturaatual`
 	end if;
 
 	if (new.codEvento = 5) then /* Equipamento sendo desligado */
-		
-      /* último evento que ligou o equipamento */ 
+
+      /* último evento que ligou o equipamento */
 		select max(codCaptura) into @capturaLiga
-		from capturaatual 
-		where codEvento = 4               /* Equipamento sendo ligado */		
+		from capturaatual
+		where codEvento = 4               /* Equipamento sendo ligado */
 		and codEquip = new.codEquip;
-		
-      /* Pega a hora em que ele foi ligado */ 
+
+      /* Pega a hora em que ele foi ligado */
 		select dataAtual into @dataLiga
 		from capturaatual
-		where codcaptura = @capturaLiga;		
+		where codcaptura = @capturaLiga;
 
       /* para tempo de uso numa variavel time
 		update equipamento
 		set tempoUso = addtime( tempoUso, subtime(time(new.dataAtual), @horaLiga) )
 		where codEquip = new.codEquip;
       */
-      
+
   		update equipamento
 		set tempoUso = tempoUso + UNIX_TIMESTAMP( new.dataAtual ) - UNIX_TIMESTAMP(@dataliga)
 		where codEquip = new.codEquip;
@@ -826,7 +829,7 @@ ALTER TABLE `usosala`
   ADD CONSTRAINT `codProced` FOREIGN KEY (`codProced`) REFERENCES `procedimento` (`codProced`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `codResp` FOREIGN KEY (`codResp`) REFERENCES `responsavel` (`codResp`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `codSala` FOREIGN KEY (`codSala`) REFERENCES `salacirurgia` (`codSala`) ON DELETE CASCADE ON UPDATE NO ACTION;
-  
+
 --
 -- Banco de Dados do Mateus
 --
@@ -862,10 +865,10 @@ CREATE TABLE `login` (
 # Data for table "login"
 #
 
-INSERT INTO `login` (`id`, `nome`, `email`, `senha`, `nivel`) VALUES 
+INSERT INTO `login` (`id`, `nome`, `email`, `senha`, `nivel`) VALUES
 (1,'Administrador','admin@admin.com.br','admin',1);
 
-INSERT INTO `usosala` VALUES 
+INSERT INTO `usosala` VALUES
 (1,1,1,1,'2014-04-28 07:38:00','0000-00-00 00:00:00',1),
 (2,2,1,1,'2014-04-28 07:38:00','0000-00-00 00:00:00',1);
 
@@ -889,7 +892,7 @@ CREATE TABLE `modulo` (
 # Data for table "modulo"
 #
 
-INSERT INTO `modulo` (`idModulo`, `ip`, `idWebSocket`, `desc`) VALUES 
+INSERT INTO `modulo` (`idModulo`, `ip`, `idWebSocket`, `desc`) VALUES
 (0,'0.0.0.0',NULL,'Módulo 0'),
 (1,'192.168.1.101',NULL,'Módulo 1'),
 (2,'192.168.1.102',NULL,'Módulo 2'),
@@ -898,7 +901,7 @@ INSERT INTO `modulo` (`idModulo`, `ip`, `idWebSocket`, `desc`) VALUES
 (5,'192.168.1.105',NULL,'Módulo 5'),
 (6,'192.168.1.106',NULL,'Módulo 6'),
 (7,'192.168.1.107',NULL,'Módulo 7');
-  
+
 ALTER TABLE `tomada`
   ADD CONSTRAINT `fkTomadaModulo` FOREIGN KEY (`codModulo`) REFERENCES `modulo` (`idModulo`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
