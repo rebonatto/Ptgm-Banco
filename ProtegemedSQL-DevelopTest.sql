@@ -359,7 +359,7 @@ INSERT INTO `tipopadrao` (`codTipoPadrao`, `desc`) VALUES
 
 DROP TABLE IF EXISTS `tomada`;
 CREATE TABLE `tomada` (
-  `codTomada` int(11) NOT NULL,
+  `codTomada` int(11) NOT NULL AUTO_INCREMENT,
   `codSala` int(11) NOT NULL,
   `indice` int(11) DEFAULT NULL,
   `limiteFase` float DEFAULT 0.0,
