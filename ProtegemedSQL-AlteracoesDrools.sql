@@ -100,3 +100,5 @@ alter table protegemed.capturaatual add constraint fk_periculosidade_corrente fo
 alter table protegemed.capturaatual add constraint fk_periculosidade_frequencia foreign key(periculosidade_frequencia) references protegemed.periculosidade_fuga(id);
 alter table protegemed.capturaatual add constraint fk_periculosidade_similaridade foreign key(periculosidade_similaridade) references protegemed.periculosidade_fuga(id);
 alter table protegemed.capturaatual modify dataatual datetime(6);
+alter table protegemed.capturaatual add similaridade varchar(50);
+alter table protegemed.capturaatual add spearman decimal(10, 6);
