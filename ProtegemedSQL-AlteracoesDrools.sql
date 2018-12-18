@@ -102,3 +102,4 @@ alter table protegemed.capturaatual add constraint fk_periculosidade_similaridad
 alter table protegemed.capturaatual modify dataatual datetime(6);
 alter table protegemed.capturaatual add similaridade varchar(50);
 alter table protegemed.capturaatual add spearman decimal(10, 6);
+
